@@ -9,32 +9,37 @@ const Reminder = require('./server/db/reminder');
 
 const app = express();
 
+module.exports = app;
+
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+
 app.use('/dist', static(path.join(__dirname, 'dist')));
 
 app.use('/public', static(path.join(__dirname, 'public')));
 
 app.use('/client', static(path.join(__dirname, 'client')));
 
-app.use('./server/api', require('./server/api'))
+// app.use('./server/api', require('./server/api'))
 
 // app.get('/', (req, res, next) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 
 app.get('/', (req, res, next) => {
-  res.sendFile(path.join(__dirname, 'client', 'index.html'))
+  res.sendFile(path.join(__dirname, 'src', 'index.html'))
 })
 
-// app.get('/api/lists', async(req, res, next) => {
-//   try {
-//     res.send(await List.findAll({
-//       include: [
-//         Reminder
-//       ]
-//     }));
-//   }
-//   catch(ex) {
-//     next(ex)
-//   }
-// })
+app.get('/api/lists', async(req, res, next) => {
+  try {
+    res.send(await List.findAll({
+      include: [
+        Reminder
+      ]
+    }));
+  }
+  catch(ex) {
+    next(ex)
+  }
+})
 
 const init = async() => {
   try {

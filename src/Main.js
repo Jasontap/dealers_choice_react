@@ -1,9 +1,8 @@
 import React from "react";
-import axios from "axios";
-import lists from "./lists";
-import reminders from "./reminders";
-import completed from "./completed";
-// import Player from "./Player";
+import Axios from "axios";
+import Lists from "./Lists";
+import Reminders from "./Reminders";
+import Completed from "./Completed";
 
 export default class Main extends React.Component {
   // constructor() {
@@ -26,8 +25,8 @@ export default class Main extends React.Component {
     // const { albums, albumId } = this.state;
     // console.log(albumId);
     return (
-      <div id="main" className="row container">
-        <h1>Here we GO!</h1>
+      <div>
+        <h3>what?</h3>
       </div>
     );
   }

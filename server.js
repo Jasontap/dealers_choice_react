@@ -41,6 +41,53 @@ app.get('/api/lists', async(req, res, next) => {
   }
 })
 
+app.get('/api/lists/:id', async(req, res, next) => {
+  try{
+    const reminder = await Reminder.findAll({
+      where: {
+        listId: req.params.id
+      }
+    })
+    res.send(reminder);
+  }
+  catch(ex) {
+    next(ex)
+  }
+})
+
+app.get('/api/lists/:id/active', async(req, res, next) => {
+  try{
+    const reminder = await Reminder.findAll({
+      where: {
+        listId: req.params.id,
+        completed: 'false'
+      }
+    })
+    res.send(reminder);
+  }
+  catch(ex) {
+    next(ex)
+  }
+})
+
+app.get('/api/lists/:id/completed', async(req, res, next) => {
+  try{
+    const reminder = await Reminder.findAll({
+      where: {
+        listId: req.params.id,
+        completed: 'true'
+      }
+    })
+    res.send(reminder);
+  }
+  catch(ex) {
+    next(ex)
+  }
+})
+
+// app.post('/api/lists/')
+
+
 const init = async() => {
   try {
     await syncAndSeed();

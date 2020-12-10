@@ -1,15 +1,13 @@
 import React from 'react';
 
-export default class Lists extends React.Component {
-  render() {
-    return (
-      <div id="sidebar">
-        <section>
-          <h4>
-            Lists
-          </h4>
-        </section>
-      </div>
-    );
-  }
+const Lists = (props) => {
+  console.log('hello List component')
+  return (
+    <div>
+      <h1>Listssss</h1>
+      <p>{ props.name }</p>
+    </div>
+  )
 }
+
+export default Lists;

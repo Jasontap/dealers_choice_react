@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const { STRING, TEXT } = Sequelize;
+const { STRING, BOOLEAN } = Sequelize;
 const db = require('./db')
 
 const Reminder = db.define('reminder', {
@@ -8,8 +8,8 @@ const Reminder = db.define('reminder', {
     allowNull: false
   },
   completed: {
-    type: STRING,
-    defaultValue: 'false'
+    type: BOOLEAN,
+    defaultValue: false
   }
 })
 

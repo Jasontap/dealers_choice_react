@@ -5,7 +5,7 @@ import axios from "axios";
 // import Completed from "./Completed";
 
 
-const Lists = ({ lists }) => {
+const Lists = ({ lists, removeList }) => { 
   return (
     <div>
       <h4>
@@ -15,10 +15,10 @@ const Lists = ({ lists }) => {
       <div>
         <ul>
           {
-            lists.map(list => {
+            lists.map((list, idx) => {
               return(
                 <li key={ list.id }>
-                  <a href={ `#${ list.id }` }>{ list.name }</a>
+                  <a href={ `#${ list.id }` }>{ list.name }</a><button onClick={ ()=> removeList(idx, list.id) }>X</button>
                 </li>
               )
             })
@@ -26,7 +26,10 @@ const Lists = ({ lists }) => {
         </ul>
       </div>
       <div>
-        <button>Add New List</button>
+        <form method='POST'>
+          <input name='name' placeholder='enter list name' />
+          <button>Add New List</button>
+        </form>
       </div>
     </div>
   )
@@ -39,6 +42,7 @@ class Reminders extends Component {
     this.state = {
       list: []
     }
+    this.removeItem = this.removeItem.bind(this);
   }
   
   async componentDidUpdate(prevProps){
@@ -53,7 +57,10 @@ class Reminders extends Component {
     this.setState({ list });
   }
   
-
+  removeItem(idx){
+    const list = this.state.list.filter((_, _idx)=> _idx !== idx);
+    this.setState({ list });
+  }
 
   render () {
     const { list } = this.state;
@@ -65,10 +72,10 @@ class Reminders extends Component {
         <div>
           <ul>
             {
-              list.map(reminder => {
+              list.map((reminder, idx) => {
                 return(
                   <li key={ reminder.id }>
-                    <a href={ `${ reminder.id }` }>{ reminder.name }</a>
+                    <a href={ `${ reminder.id }` }>{ reminder.name }</a><button onClick={ ()=> this.removeItem(idx) }>X</button>
                   </li>
                 )
               })
@@ -135,6 +142,7 @@ export default class Main extends Component {
       lists: [],
       selectedList: ''
     };
+    this.removeList = this.removeList.bind(this);
   }
 
   async componentDidMount(){
@@ -144,15 +152,29 @@ export default class Main extends Component {
     });
     this.setState({ selectedList: window.location.hash.slice(1)});
   }
+
+  // addList(){
+
+  //   this.setState({ lists: [...this.state.lists, ]})
+  // }
+
+  removeList(idx, listId){
+    // await axios.delete('/api/lists/')
+    // const lists = this.state.lists.filter((_, _idx)=> _idx !== idx);
+    this.setState({ lists });
+  }
   
   render() {
     const { lists, selectedList } = this.state;
-    
+    const { removeList } = this;
+    // console.log(lists)
     return (
       <div>
-        { <Lists lists={ lists } /> }
-        { !!selectedList && <Reminders selectedList={ selectedList } /> }
-        { !!selectedList && <Completed selectedList={ selectedList } /> }
+        { <Lists lists={ lists } removeList={ removeList } /> }
+        <div>
+          { !!selectedList && <Reminders selectedList={ selectedList } /> }
+          { !!selectedList && <Completed selectedList={ selectedList } /> }
+        </div>
       </div>
     );
   }

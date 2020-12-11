@@ -85,7 +85,30 @@ app.get('/api/lists/:id/completed', async(req, res, next) => {
   }
 })
 
-// app.post('/api/lists/')
+app.delete('/api/lists/:id', async(req, res, next) => {
+  try {
+    await req.params.id.destroy();
+
+    res.send(await List.findAll({
+      include: [
+        Reminder
+      ]
+    }));
+  }
+  catch(ex) {
+    next(ex)
+  }
+})
+
+app.post('/api/lists', async(req, res, next) => {
+  try {
+    const list = await List.create(req.body)
+  }
+  catch(ex) {
+    next(ex)
+  }
+
+})
 
 
 const init = async() => {

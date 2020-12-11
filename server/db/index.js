@@ -29,12 +29,12 @@ const syncAndSeed = async() => {
     Reminder.create({ 
       name: 'List 1 Reminder 4',
       listId: 1,
-      completed: 'true'
+      completed: true
     });
     Reminder.create({ 
       name: 'List 1 Reminder 5',
       listId: 1,
-      completed: 'true'
+      completed: true
     });
 
     //Reminders for list 2
@@ -49,7 +49,7 @@ const syncAndSeed = async() => {
     Reminder.create({ 
       name: 'List 2 Reminder 3',
       listId: 2,
-      completed: 'true'
+      completed: true
     });
     
      //Reminders for list 3
@@ -60,7 +60,7 @@ const syncAndSeed = async() => {
     Reminder.create({ 
       name: 'List 3 Reminder 2',
       listId: 3,
-      completed: 'true'
+      completed: true
     });
     Reminder.create({ 
       name: 'List 3 Reminder 3',
@@ -73,7 +73,7 @@ const syncAndSeed = async() => {
     Reminder.create({ 
       name: 'List 3 Reminder 5',
       listId: 3,
-      completed: 'true'
+      completed: true
     });
 }
 

@@ -11,8 +11,9 @@ const app = express();
 
 module.exports = app;
 
-app.use(express.json())
-app.use(express.urlencoded({extended: true}))
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+app.use(require('method-override')('_method'));
 
 app.use('/dist', static(path.join(__dirname, 'dist')));
 
@@ -25,6 +26,7 @@ app.use('/client', static(path.join(__dirname, 'client')));
 // app.get('/', (req, res, next) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 
 app.get('/', (req, res, next) => {
+  console.log(path.join())
   res.sendFile(path.join(__dirname, 'src', 'index.html'))
 })
 
@@ -87,22 +89,60 @@ app.get('/api/lists/:id/completed', async(req, res, next) => {
 
 app.delete('/api/lists/:id', async(req, res, next) => {
   try {
-    await req.params.id.destroy();
-
-    res.send(await List.findAll({
-      include: [
-        Reminder
-      ]
-    }));
+    const list = await List.findByPk(req.params.id);
+    await list.destroy();
+    res.redirect('/');
   }
   catch(ex) {
     next(ex)
   }
 })
 
+// deleting a LIST
+app.delete('/api/lists/:id', async(req, res, next) => {
+  try {
+    const list = await List.findByPk(req.params.id);
+    await list.destroy();
+    res.redirect('/');
+  }
+  catch(ex) {
+    next(ex)
+  }
+})
+
+// deleting a REMINDER
+app.delete('/api/lists/:id/:reminderId', async(req, res, next) => {
+  try {
+    const reminder = await Reminder.findByPk(req.params.reminderId);
+    await reminder.destroy();
+    res.redirect(`/#${ req.params.id }`);
+    // res.send(req.params)
+  }
+  catch(ex) {
+    next(ex)
+  }
+})
+
+//posting a LIST
 app.post('/api/lists', async(req, res, next) => {
   try {
-    const list = await List.create(req.body)
+    const list = await List.create(req.body);
+    res.redirect('/');
+  }
+  catch(ex) {
+    next(ex)
+  }
+
+})
+
+//posting a REMINDER
+app.post('/api/lists/:id', async(req, res, next) => {
+  try {
+    const list = await Reminder.create({
+      name: req.body.name,
+      listId: req.params.id
+    });
+    res.redirect(`/#${ req.params.id }`);
   }
   catch(ex) {
     next(ex)
@@ -113,7 +153,7 @@ app.post('/api/lists', async(req, res, next) => {
 
 const init = async() => {
   try {
-    await syncAndSeed();
+    // await syncAndSeed();
     const port = process.env.PORT || 1337;
     app.listen(port, ()=> console.log(`listening on port ${port}`));
   }

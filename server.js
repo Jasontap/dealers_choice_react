@@ -25,8 +25,8 @@ app.use('/client', static(path.join(__dirname, 'client')));
 
 // app.get('/', (req, res, next) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 
+
 app.get('/', (req, res, next) => {
-  console.log(path.join())
   res.sendFile(path.join(__dirname, 'src', 'index.html'))
 })
 
@@ -103,7 +103,7 @@ app.delete('/api/lists/:id', async(req, res, next) => {
   try {
     const list = await List.findByPk(req.params.id);
     await list.destroy();
-    res.redirect('/');
+    res.redirect('/#');
   }
   catch(ex) {
     next(ex)
@@ -127,7 +127,7 @@ app.delete('/api/lists/:id/:reminderId', async(req, res, next) => {
 app.post('/api/lists', async(req, res, next) => {
   try {
     const list = await List.create(req.body);
-    res.redirect('/');
+    res.redirect('/#');
   }
   catch(ex) {
     next(ex)
@@ -153,7 +153,7 @@ app.post('/api/lists/:id', async(req, res, next) => {
 
 const init = async() => {
   try {
-    // await syncAndSeed();
+    await syncAndSeed();
     const port = process.env.PORT || 1337;
     app.listen(port, ()=> console.log(`listening on port ${port}`));
   }

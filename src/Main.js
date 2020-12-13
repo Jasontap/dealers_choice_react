@@ -9,7 +9,7 @@ const Lists = ({ lists }) => {
   return (
     <div>
       <h4>
-        <a href=''>Home</a>
+        <a href='#'>Home</a>
       </h4>
       <h1>Lists</h1>
       <div>
